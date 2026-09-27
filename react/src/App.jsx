@@ -14,7 +14,7 @@ export default function App(){
   const [seacrchQuery, setSearchQuery] = useState("");
   const [forceEmptyState, setForceEmptyState] = useState(false);
 
-  const filterCategory = PRODUCTS_DATA.filter((product) => {
+  const filteredProducts = PRODUCTS_DATA.filter((product) => {
     if (forceEmptyState) return false;
 
     const matchesCategory = selectedCategory === "All" || product.category === selectedCategory;
@@ -35,6 +35,38 @@ export default function App(){
     };
 
     return(
-          
-    )
+       <div>
+        <Navbar />
+
+        <Main>
+          <Hero />
+
+          <Section>
+            <CategoryFilter />
+          </Section>
+
+          <Section>
+            <h2>Featured Products</h2>
+
+            <button onClick={() => setForceEmptyState(!forceEmptyState)}>
+                {ForceEmptyState ? "Show Products" : "Preview Empty State"}
+            </button>
+
+            { filteredProducts.length > 0 ? (
+              <div>
+                {FilteredProducts.map((product) => (
+                    <ProductCard 
+                      key = {product.id}
+                      onAddToCart = {handleAddToCart}
+                      product = {product}
+                    />
+                ))}
+              </div>
+            ): ( <EmptyState onReset={handleResetFilters}/>)
+             }
+          </Section>
+        </Main>
+       </div>
+
+    );
 }
